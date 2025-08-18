@@ -24,6 +24,7 @@ export default function LoginPage() {
             } else {
                 alert(data.message || "Login failed");
             }
+
         } catch (err) {
             console.error(err);
             alert("Error logging in");
