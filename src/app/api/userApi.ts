@@ -28,6 +28,6 @@ export const signupUser = async (userData: {
 
 // Signin
 export const signinUser = async (formData: any) => {
-  const res = await API.post('/users/signin', formData);
+  const res = await API.post('http://localhost:3001/users/signin', formData);
   return res.data;
 };

@@ -16,7 +16,7 @@ export default function DashboardPage() {
 
     const openNewReminderModal = (e: React.MouseEvent) => {
         e.preventDefault();
-        router.push("/reminders/new");
+        router.push("/dashboard/reminders/new");
     };
 
     return (
