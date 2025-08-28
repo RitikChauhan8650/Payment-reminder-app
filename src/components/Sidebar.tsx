@@ -11,6 +11,7 @@ const menuItems = [
     { href: "/dashboard/history", label: "History", icon: History },
     { href: "/dashboard/profile", label: "Profile", icon: User },
     { href: "/dashboard/settings", label: "Settings", icon: Settings },
+    { href: "/dashboard/groups/new", label: "Groups", icon: Users },
 ];
 
 export default function Sidebar() {

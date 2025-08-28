@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 
 export default function NewReminder() {
     const router = useRouter();
+    const token = localStorage.getItem("token"); // or from redux
+
     const [form, setForm] = useState({
         title: "",
         amount: "",
@@ -38,10 +40,11 @@ export default function NewReminder() {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        await fetch("http://localhost:3002/payments/create", {
+        await fetch("http://localhost:3000/payments/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,   // 🔥 send token
             },
             body: JSON.stringify(form),
         });
