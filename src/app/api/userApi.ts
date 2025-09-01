@@ -2,7 +2,7 @@ import { SignupFormData } from '@/constants';
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:3000', // Backend base URL
+  baseURL: 'http://localhost:4000', // Backend base URL
 });
 
 // Signup
@@ -11,7 +11,7 @@ export const signupUser = async (userData: {
   password: string;
   name: string;
 }) => {
-  const res = await fetch("http://localhost:3000/users/signup", {
+  const res = await fetch("http://localhost:4000/users/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -28,6 +28,6 @@ export const signupUser = async (userData: {
 
 // Signin
 export const signinUser = async (formData: any) => {
-  const res = await API.post('http://localhost:3000/users/signin', formData);
+  const res = await API.post('http://localhost:4000/users/signin', formData);
   return res.data;
 };

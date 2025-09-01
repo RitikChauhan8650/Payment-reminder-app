@@ -1,4 +1,5 @@
 "use client";
+import { api, apiFetch, postApi } from "@/lib/api";
 import { useState } from "react";
 
 export default function GroupsPage() {
@@ -29,40 +30,30 @@ export default function GroupsPage() {
         }
 
         setLoading(true);
-        try {
 
-            const res = await fetch("http://localhost:3002/groups/create", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name: groupName,
-                    tag: groupTag,
-                    members,
-                }),
+        try {
+            // call your API helper
+            const data = await api.post("/groups/create", {
+                name: groupName,
+                tag: groupTag,
+                members,
             });
 
-            if (res.ok) {
-                const data = await res.json();
-                console.log("Group created:", data);
+            console.log("Group created:", data);
 
-                // Reset form
-                setGroupName("");
-                setGroupTag("");
-                setMembers([]);
-                alert("Group created successfully!");
-            } else {
-                console.error("Failed to create group");
-                alert("Error creating group");
-            }
+            // Reset form
+            setGroupName("");
+            setGroupTag("");
+            setMembers([]);
+            alert("Group created successfully!");
         } catch (err) {
             console.error("Error:", err);
-            alert("Something went wrong");
+            alert("Error creating group");
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="p-6 max-w-xl mx-auto space-y-6">

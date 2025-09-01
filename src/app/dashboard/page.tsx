@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -7,11 +8,16 @@ export default function DashboardPage() {
     const router = useRouter();
 
     useEffect(() => {
-        fetch("http://localhost:3002/payments/all", {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        })
-            .then(res => res.json())
-            .then(data => setReminders(data));
+        async function fetchPayments() {
+            try {
+                const data = await apiFetch("/payments/all");
+                console.log("data from fetchPayments----", data);
+                setReminders(data);
+            } catch (err: any) {
+                alert(err.message);
+            }
+        }
+        fetchPayments();
     }, []);
 
     const openNewReminderModal = (e: React.MouseEvent) => {

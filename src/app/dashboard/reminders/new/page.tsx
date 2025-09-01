@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/api";
 
 export default function NewReminder() {
     const router = useRouter();
@@ -39,17 +40,15 @@ export default function NewReminder() {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-
-        await fetch("http://localhost:3000/payments/create", {
+        console.log("hellllllllllllo");
+        const data = await apiFetch("/payments/create", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,   // 🔥 send token
-            },
             body: JSON.stringify(form),
         });
 
-        router.push("/dashboard");
+        console.log("✅ Payment created:", data);
+
+        // router.push("/dashboard");
     };
 
     return (
