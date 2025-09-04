@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, PlusCircle, Users, History, User, Settings } from "lucide-react";
+import { Home, PlusCircle, Users, History, User, Settings, CreditCard } from "lucide-react";
 
 const menuItems = [
     { href: "/dashboard", label: "All Reminders", icon: Home },
@@ -12,6 +12,7 @@ const menuItems = [
     { href: "/dashboard/profile", label: "Profile", icon: User },
     { href: "/dashboard/settings", label: "Settings", icon: Settings },
     { href: "/dashboard/groups/new", label: "Groups", icon: Users },
+    { href: "/dashboard/groups", label: "My Groups", icon: Users },
 ];
 
 export default function Sidebar() {
