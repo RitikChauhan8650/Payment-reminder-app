@@ -1,12 +1,17 @@
 "use client";
 import { useState } from "react";
-import { api, apiFetch } from "@/lib/api"; // your API wrapper
+import { api } from "@/lib/api";
 import { ArrowRight } from "lucide-react";
 
 type Transaction = {
     from: string;
     to: string;
     amount: number;
+};
+
+type Expense = {
+    userId: string;
+    amountPaid: number;
 };
 
 export default function SettlementVisualizer({ groupId }: { groupId: string }) {
@@ -17,27 +22,23 @@ export default function SettlementVisualizer({ groupId }: { groupId: string }) {
     const handleSettle = async () => {
         setLoading(true);
         try {
-            // Example expenses (replace with real data from DB/group state)
-            const expenses = [
-                { userId: "Alice", amountPaid: 1000 },
-                { userId: "Bob", amountPaid: 500 },
-                { userId: "Charlie", amountPaid: 1500 },
-            ];
+            // 🔹 Fetch expenses for this group from backend
+            const groupData = await api.get(`/groups/${groupId}`);
+            const expenses: Expense[] = groupData.expenses.map((exp: any) => ({
+                userId: exp.paidBy, // adjust if your backend uses another field
+                amountPaid: exp.amount,
+            }));
 
+            // 🔹 Call settlement endpoint
             const result = await api.post("/groups/settle", {
                 method: "POST",
-                body: JSON.stringify({ expenses }),
+                body: JSON.stringify({ groupId, expenses }),
             });
 
-            setTransactions(result.transactions);
-            setBalances(
-                expenses.reduce((acc, e) => {
-                    acc[e.userId] = e.amountPaid;
-                    return acc;
-                }, {} as Record<string, number>)
-            );
+            setTransactions(result.transactions || []);
+            setBalances(result.balances || {});
         } catch (err) {
-            console.error("Error:", err);
+            console.error("Error settling group:", err);
         } finally {
             setLoading(false);
         }

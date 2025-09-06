@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { apiFetch } from "@/lib/api";
+import { api, apiFetch } from "@/lib/api";
 
 export default function NewReminder() {
     const router = useRouter();
@@ -41,7 +41,7 @@ export default function NewReminder() {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         console.log("hellllllllllllo");
-        const data = await apiFetch("/payments/create", {
+        const data = await api.post("/payments/create", {
             method: "POST",
             body: JSON.stringify(form),
         });
