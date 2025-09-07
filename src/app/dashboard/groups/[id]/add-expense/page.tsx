@@ -13,14 +13,22 @@ export default function AddExpensePage() {
     const [form, setForm] = useState({
         title: "",
         amount: "",
-        paidBy: "",
         dueDate: "",
+        contributions: [] as { email: string; paidAmount: number }[],
     });
 
     useEffect(() => {
         async function fetchGroup() {
             try {
                 const data = await api.get(`/groups/${id}`);
+                // Initialize contributions for each member
+                setForm((prev) => ({
+                    ...prev,
+                    contributions: data.members.map((m: any) => ({
+                        email: m.email,
+                        paidAmount: 0,
+                    })),
+                }));
                 setGroup(data);
             } catch (err) {
                 console.error("Error fetching group:", err);
@@ -31,8 +39,14 @@ export default function AddExpensePage() {
         fetchGroup();
     }, [id]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
+    };
+
+    const handleContributionChange = (index: number, value: number) => {
+        const updated = [...form.contributions];
+        updated[index].paidAmount = value;
+        setForm({ ...form, contributions: updated });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -41,10 +55,10 @@ export default function AddExpensePage() {
             await api.post(`/groups/${id}/expenses`, {
                 title: form.title,
                 amount: Number(form.amount),
-                paidBy: form.paidBy,
                 dueDate: form.dueDate ? new Date(form.dueDate) : null,
+                contributions: form.contributions, // ✅ send emails + paidAmount
             });
-            router.push(`/dashboard/groups/${id}`); // ✅ back to group details
+            router.push(`/dashboard/groups/${id}`);
         } catch (err) {
             console.error("Error adding expense:", err);
         }
@@ -70,9 +84,9 @@ export default function AddExpensePage() {
                     />
                 </div>
 
-                {/* Amount */}
+                {/* Total Amount */}
                 <div>
-                    <label className="block mb-1 font-medium">Amount (₹)</label>
+                    <label className="block mb-1 font-medium">Total Amount (₹)</label>
                     <input
                         type="number"
                         name="amount"
@@ -83,23 +97,31 @@ export default function AddExpensePage() {
                     />
                 </div>
 
-                {/* Paid By */}
+                {/* Contributions */}
                 <div>
-                    <label className="block mb-1 font-medium">Paid By</label>
-                    <select
-                        name="paidBy"
-                        value={form.paidBy}
-                        onChange={handleChange}
-                        required
-                        className="w-full border rounded px-3 py-2"
-                    >
-                        <option value="">Select Member</option>
-                        {group.members.map((m: any) => (
-                            <option key={m._id} value={m._id}>
-                                {m.email}
-                            </option>
+                    <label className="block mb-2 font-medium">Contributions</label>
+                    <div className="space-y-2">
+                        {group.members.map((m: any, index: number) => (
+                            <div
+                                key={m._id}
+                                className="flex items-center justify-between gap-2 border p-2 rounded"
+                            >
+                                <span>{m.email}</span>
+                                <input
+                                    type="number"
+                                    placeholder="Paid ₹"
+                                    value={form.contributions[index]?.paidAmount || ""}
+                                    onChange={(e) =>
+                                        handleContributionChange(
+                                            index,
+                                            Number(e.target.value)
+                                        )
+                                    }
+                                    className="w-24 border rounded px-2 py-1"
+                                />
+                            </div>
                         ))}
-                    </select>
+                    </div>
                 </div>
 
                 {/* Due Date */}

@@ -1,5 +1,5 @@
 "use client";
-import { apiFetch } from "@/lib/api";
+import { api, apiFetch } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -10,7 +10,7 @@ export default function DashboardPage() {
     useEffect(() => {
         async function fetchPayments() {
             try {
-                const data = await apiFetch("/payments/all");
+                const data = await api.get("/payments/all");
                 console.log("data from fetchPayments----", data);
                 setReminders(data);
             } catch (err: any) {
