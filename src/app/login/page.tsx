@@ -11,12 +11,14 @@ export default function LoginPage() {
 
     const handleLogin = async (email: string, password: string) => {
         try {
-            const res = await fetch("http://localhost:3000/users/signin", {
+            const res = await fetch("http://localhost:4000/users/signin", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
+            console.log("res--------------", res);
             const data = await res.json();
+            console.log("data--------------", data);
 
             if (res.ok && data.token) {
                 setToken(data.token);
@@ -24,6 +26,7 @@ export default function LoginPage() {
             } else {
                 alert(data.message || "Login failed");
             }
+
         } catch (err) {
             console.error(err);
             alert("Error logging in");

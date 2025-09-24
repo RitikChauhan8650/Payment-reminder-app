@@ -1,4 +1,5 @@
 "use client";
+import { api, apiFetch } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -7,17 +8,23 @@ export default function DashboardPage() {
     const router = useRouter();
 
     useEffect(() => {
-        fetch("http://localhost:3002/payments/all", {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        })
-            .then(res => res.json())
-            .then(data => setReminders(data));
+        async function fetchPayments() {
+            try {
+                const data = await api.get("/payments/all");
+                console.log("data from fetchPayments----", data);
+                setReminders(data);
+            } catch (err: any) {
+                alert(err.message);
+            }
+        }
+        fetchPayments();
     }, []);
 
     const openNewReminderModal = (e: React.MouseEvent) => {
         e.preventDefault();
-        router.push("/reminders/new");
+        router.push("/dashboard/reminders/new");
     };
+    console.log("reminders---------", reminders);
 
     return (
         <div className="min-h-screen bg-gray-100 p-6">
@@ -31,7 +38,7 @@ export default function DashboardPage() {
             </a>
 
             <div className="grid gap-4 md:grid-cols-2 mt-6">
-                {reminders.map((r: any) => (
+                {reminders?.map((r: any) => (
                     <div key={r._id} className="p-4 bg-white shadow rounded-xl">
                         <h2 className="text-lg font-semibold">{r.title}</h2>
                         <p className="text-gray-500">Due: {new Date(r.dueDate).toDateString()}</p>
