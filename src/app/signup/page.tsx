@@ -11,7 +11,7 @@ export default function SignupPage() {
 
     const handleSignup = async (email: string, password: string, name?: string) => {
         console.log('Signup', { email, password, name });
-        const formData: SignupFormData = { email, password, name };
+        const formData: any = { email, password, name };
 
         try {
             const data = await signupUser(formData);

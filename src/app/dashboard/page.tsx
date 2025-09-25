@@ -24,7 +24,6 @@ export default function DashboardPage() {
         e.preventDefault();
         router.push("/dashboard/reminders/new");
     };
-    console.log("reminders---------", reminders);
 
     return (
         <div className="min-h-screen bg-gray-100 p-6">
