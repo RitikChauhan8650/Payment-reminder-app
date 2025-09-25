@@ -1,11 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api, apiFetch } from "@/lib/api";
 
 export default function NewReminder() {
     const router = useRouter();
-    const token = localStorage.getItem("token"); // or from redux
+    const [token, setToken] = useState<string | null>(null);
 
     const [form, setForm] = useState({
         title: "",
@@ -18,6 +18,10 @@ export default function NewReminder() {
         participants: [] as string[],
         newEmail: "",
     });
+
+    useEffect(() => {
+        setToken(localStorage.getItem("token"));
+    }, []);
 
     // Add participant by email
     const handleAddEmail = () => {

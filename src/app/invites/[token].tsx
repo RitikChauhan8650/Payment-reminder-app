@@ -26,7 +26,7 @@ export default function InvitePage({ params }: { params: { token: string } }) {
 
     return (
         <div className="max-w-md mx-auto p-6 bg-white rounded shadow">
-            <h1 className="text-lg font-bold">You've been invited to a Payment Reminder</h1>
+            <h1 className="text-lg font-bold">You have been invited to a Payment Reminder</h1>
             {status === "accepted" && <p className="text-green-600">✅ Invitation Accepted!</p>}
             {status === "rejected" && <p className="text-red-600">❌ Invitation Rejected</p>}
             {status === "loading" || status === "accepted" || status === "rejected" ? null : (

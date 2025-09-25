@@ -1,5 +1,5 @@
 "use client";
-import { api, apiFetch, postApi } from "@/lib/api";
+import { api, apiFetch } from "@/lib/api";
 import { useState } from "react";
 
 export default function GroupsPage() {
