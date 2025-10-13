@@ -1,6 +1,7 @@
 import { getToken } from "./auth";
 
-const API_BASE = "http://localhost:4000"; // API Gateway
+// const API_BASE = "http://localhost:4000"; // API Gateway
+const API_BASE = "https://payment-reminder-backend-2.onrender.com"; // Backend base URL
 
 export async function apiFetch(path: string, p0: string, p1: { name: string; tag: string; members: string[]; }, options: RequestInit = {}) {
     console.log("options-------", options)
