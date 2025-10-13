@@ -45,10 +45,7 @@ export default function NewReminder() {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         console.log("hellllllllllllo");
-        const data = await api.post("/payments/create", {
-            method: "POST",
-            body: JSON.stringify(form),
-        });
+        const data = await api.post("/payments/create", form);
 
         console.log("✅ Payment created:", data);
 
